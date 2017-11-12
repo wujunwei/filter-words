@@ -1,0 +1,13 @@
+{
+    "name": "firstw/filter-words",
+    "description": "A little library for sensitive-filter",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "adam",
+            "email": "wjw3323@live.com"
+        }
+    ],
+    "require": {}
+}
