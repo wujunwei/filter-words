@@ -24,7 +24,7 @@ if (!function_exists('buildNode')){
     function buildNode(&$node, $chars, $i = 0)
     {
         if($i < count($chars)){
-            $char = $chars[$i];
+            $char =  $chars[$i];
             if (!isset($node[$char])){
                 $node[$char] = [];
             }

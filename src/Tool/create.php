@@ -59,7 +59,9 @@ class Trie
         foreach ($words as $word){
             buildNode($root, mbStrSplit($word));
         }
-        echo json_encode($root);
+        //init double-array trie
+        $base[0] = 1;
+        $check[0] = 0;
     }
 
     static  public function updateFromFile($filePath, $trie)
