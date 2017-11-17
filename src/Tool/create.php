@@ -1,6 +1,8 @@
 <?php
+if (PHP_SAPI  != 'cli'){
+    die('you are not in cli mode');
+}
 define('UPDATE', '-u');
-//define('FILE', '-0');
 define('FILE_EXTENSION', '.trie');
 require 'functions.php';
 /**
@@ -60,8 +62,7 @@ class Trie
             buildNode($root, mbStrSplit($word));
         }
         //init double-array trie
-        $base[0] = 1;
-        $check[0] = 0;
+        buildTrie($root, $base, $check);
     }
 
     static  public function updateFromFile($filePath, $trie)
