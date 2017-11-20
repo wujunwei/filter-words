@@ -63,6 +63,14 @@ class Trie
         }
         //init double-array trie
         buildTrie($root, $base, $check);
+        echo "base:\n";
+        foreach ($base as $key => $node){
+            echo $key.'->'.$node."\t";
+        }
+        echo "\ncheck:\n";
+        foreach ($check as $key => $node){
+            echo $key.'->'.$node."\t";
+        }
     }
 
     static  public function updateFromFile($filePath, $trie)

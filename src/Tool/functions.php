@@ -26,11 +26,14 @@ if (!function_exists('buildNode')){
         if($i < count($chars)){
             $char =  $chars[$i];
             if (!isset($node[$char])){
-                $node[$char] = [];
+                $node[$char] = null;
             }
             buildNode($node[$char], $chars, $i + 1);
         }else{
-            $node = null;
+            if (!is_array($node)){
+                $node = null;
+            }
+
         }
     }
 }
@@ -95,21 +98,22 @@ if (!function_exists('insertTrie')){
         foreach ($root as $key => $value){
             $unicode = utf8ToUnicodeInt($key);
             //若发生冲突。则重新寻找合适的位置
-            for ($k = 1;;$k ++){
+            for (;;){
                 if (!isset($base[$base[$i] + $unicode])){
                     break;
                 }else{
-                    $base[$i] += $k;
+                    $base[$i] += 1;
                 }
             }
             $next = $base[$i] + $unicode;
+            $check[$next] =  $base[$i];
             if (is_array($value)){
                 $base[$next] = $next + 1;
-                insertTrie($root, $base, $check, $next);
+                insertTrie($value, $base, $check, $next);
             }else{
                 $base[$next] = $i * -1;
             }
-            $check[$next] = $i;
         }
     }
 }
+echo utf8ToUnicodeInt('w');
