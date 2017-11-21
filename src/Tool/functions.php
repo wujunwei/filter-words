@@ -55,6 +55,9 @@ if (!function_exists('mbStrSplit')){
 if (!function_exists('utf8ToUnicodeInt')){
     function utf8ToUnicodeInt($utf8_str)
     {
+        if (is_int($utf8_str)){
+            $utf8_str = strval($utf8_str);
+        }
         $unicode = (ord($utf8_str[0]) & 0x1F) << 12;
         if (isset($utf8_str[1])){
             $unicode |= (ord($utf8_str[1]) & 0x3F) << 6;
@@ -106,7 +109,7 @@ if (!function_exists('insertTrie')){
                 }
             }
             $next = $base[$i] + $unicode;
-            $check[$next] =  $base[$i];
+            $check[$next] = $i;
             if (is_array($value)){
                 $base[$next] = $next + 1;
                 insertTrie($value, $base, $check, $next);
@@ -116,4 +119,3 @@ if (!function_exists('insertTrie')){
         }
     }
 }
-echo utf8ToUnicodeInt('w');
