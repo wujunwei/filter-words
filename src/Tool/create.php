@@ -5,6 +5,7 @@ if (PHP_SAPI  != 'cli'){
 define('UPDATE', '-u');
 define('FILE_EXTENSION', '.trie');
 require 'functions.php';
+require "../../vendor/autoload.php";
 /**
  *  Trie test.txt -u tdsfa.trie
  */
@@ -63,6 +64,8 @@ class Trie
         }
         //init double-array trie
         buildTrie($root, $base, $check);
+
+        (new \Brush\Trie($base, $check))->detect('32451');
         echo "base:\n";
         foreach ($base as $key => $node){
             echo $key.'->'.$node."\t";

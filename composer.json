@@ -9,5 +9,11 @@
             "email": "wjw3323@live.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Brush\\": "./src",
+          "Test\\": "./test"
+        }
+    },
     "require": {}
 }
