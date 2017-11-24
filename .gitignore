@@ -11,6 +11,6 @@ composer.phar
 
 # IntelliJ project files
 .idea
-
+*.trie
 out
 gen
