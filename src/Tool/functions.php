@@ -44,7 +44,7 @@ if (!function_exists('mbStrSplit')){
         $str_len = mb_strlen($string);
         $array = [];
         while ($str_len) {
-            array_push($array, mb_substr($string,$start,$len,"utf8"));
+            array_push($array, utf8ToUnicodeInt(mb_substr($string,$start,$len,"utf8")));
             $string = mb_substr($string, $len, $str_len,"utf8");
             $str_len = mb_strlen($string);
         }
@@ -58,9 +58,11 @@ if (!function_exists('utf8ToUnicodeInt')){
         if (is_int($utf8_str)){
             $utf8_str = strval($utf8_str);
         }
-        $unicode = (ord($utf8_str[0]) & 0x1F) << 12;
         if (isset($utf8_str[1])){
+            $unicode = (ord($utf8_str[0]) & 0x1F) << 12;
             $unicode |= (ord($utf8_str[1]) & 0x3F) << 6;
+        }else{
+            $unicode = ord($utf8_str[0]);
         }
         if (isset($utf8_str[2])){
             $unicode |= (ord($utf8_str[2]) & 0x3F);
@@ -76,7 +78,7 @@ if (!function_exists('buildTrie')){
         $check[0] = 0;
         //先建立第一层节点
         foreach ($root as $key => $value){
-            $next = $base[0] + utf8ToUnicodeInt($key);
+            $next = $base[0] + $key;
             if (is_array($value)){
                 $base[$next] = $next + 1;
             }else{
@@ -89,7 +91,7 @@ if (!function_exists('buildTrie')){
         //再插入剩余节点
         foreach ($root as $key => $value){
             if (is_array($value)){
-                insertTrie($value, $base, $check, $base[0] + utf8ToUnicodeInt($key));
+                insertTrie($value, $base, $check, $base[0] + $key);
             }
         }
     }
@@ -98,17 +100,23 @@ if (!function_exists('buildTrie')){
 if (!function_exists('insertTrie')){
     function insertTrie($root, &$base = [], &$check = [], $i = 0)
     {
-        foreach ($root as $key => $value){
-            $unicode = utf8ToUnicodeInt($key);
-            //若发生冲突。则重新寻找合适的位置
-            for (;;){
-                if (!isset($base[$base[$i] + $unicode])){
+        //若发生冲突。则重新寻找合适的位置
+        for (;;){
+            $pass = true;
+            foreach ($root as $k => $v){
+                if (isset($base[$base[$i] + $k]) ){
+                    $pass = false;
                     break;
-                }else{
-                    $base[$i] += 1;
                 }
             }
-            $next = $base[$i] + $unicode;
+            if ($pass){
+                break;
+            }else{
+                $base[$i] += 1;
+            }
+        }
+        foreach ($root as $key => $value){
+            $next = $base[$i] + $key;
             $check[$next] = $i;
             if (is_array($value)){
                 $base[$next] = $next + 1;

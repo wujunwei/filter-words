@@ -10,40 +10,6 @@ require "../../vendor/autoload.php";
  *  Trie test.txt -u tdsfa.trie
  */
 
-/**
- * Class Node
- * @deprecated use [] instead
- */
-class Node
-{
-
-    public $char = '';
-
-    /**
-     * @var Node[]
-     */
-    private $children = [];
-
-    public function __construct($ch = '')
-    {
-        $this->char = $ch;
-    }
-
-    public function find($char)
-    {
-        foreach ($this->children as &$child){
-            if ($child->char === $char){
-                return $child;
-            }
-        }
-        return null;
-    }
-
-    public function addChild($char)
-    {
-        $this->children[] = new Node($char);
-    }
-}
 
 class Trie
 {
@@ -64,34 +30,7 @@ class Trie
         }
         //init double-array trie
         buildTrie($root, $base, $check);
-
-        (new \Brush\Trie($base, $check))->detect('32451');
-        echo "base:\n";
-        foreach ($base as $key => $node){
-            echo $key.'->'.$node."\t";
-        }
-        echo "\ncheck:\n";
-        foreach ($check as $key => $node){
-            echo $key.'->'.$node."\t";
-        }
-    }
-
-    static  public function updateFromFile($filePath, $trie)
-    {
-        if (!file_exists($filePath)){
-            echo "file '{$filePath}' not exist!";
-            die();
-        }
-        if (!file_exists($trie)){
-            echo "file '{$filePath}' not exist!";
-            die();
-        }
-
-        $root = [];
-        $words = getSensitiveFromFile($filePath);
-        foreach ($words as $word){
-            buildNode($root, mbStrSplit($word));
-        }
+        file_put_contents($filePath.FILE_EXTENSION, json_encode(['check' => $check, 'base' => $base], true));
     }
 
 }
@@ -102,12 +41,6 @@ if ($argc < 2){
 }
 if ($argc === 2 ){
     Trie::createFromFile($argv['1']);
-    die();
-}
-
-if ($argv[2] == UPDATE && isset($argv[3])){
-    $oldFile = $argv[3];
-    Trie::updateFromFile($oldFile, $argv['1']);
 }
 
 echo 'done!';
