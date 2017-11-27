@@ -26,6 +26,10 @@ class Trie
         $this->check = $check;
     }
 
+    /**
+     * @param $utf8_str
+     * @return int
+     */
     private function utf8ToUnicodeInt($utf8_str)
     {
         if (is_int($utf8_str)){
@@ -43,14 +47,19 @@ class Trie
         return $unicode;
     }
 
+    /**
+     * @param $string
+     * @param int $len
+     * @return array
+     */
     private function mbStrSplit($string, $len=1) {
         $start = 0;
         $str_len = mb_strlen($string);
         $array = [];
         while ($str_len) {
-            array_push($array, mb_substr($string,$start,$len,"utf8"));
-            $string = mb_substr($string, $len, $str_len,"utf8");
-            $str_len = mb_strlen($string);
+            $array[] = mb_substr($string,$start,$len,"utf8");
+            $start ++;
+            $str_len --;
         }
         return $array;
     }
@@ -60,12 +69,12 @@ class Trie
      * @param int $threshold
      * @return array
      */
-    public function detect($str, $threshold = 1)
+    public function detect($str, $threshold = 10)
     {
         $last_key = 0;
         $results = [];
         $temp = '';
-        $str_arr = $this->mbStrSplit($str);
+        $str_arr = $this->mbStrSplit($str);echo microtime(true).PHP_EOL;
         $i = 0;
         $len = count($str_arr);
         for ($key = 0;$key < $len;$key ++){
@@ -74,7 +83,7 @@ class Trie
                 continue;
             }
             $temp_value = $this->utf8ToUnicodeInt($value);
-            echo "$value : $temp_value\n";
+//            echo "$value : $temp_value\n";
             $j = $this->base[$i] + $temp_value;
             if (isset($this->base[$j]) && $this->check[$j] === $i){
                 $temp .= $value;

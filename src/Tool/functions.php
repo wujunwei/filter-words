@@ -16,7 +16,7 @@ if (!function_exists('getSensitiveFromFile')){
         $data = file_get_contents($filePath);
         return array_map(function ($a){
             return trim($a);
-        }, explode(',', $data));
+        }, explode("\n", $data));
     }
 }
 
