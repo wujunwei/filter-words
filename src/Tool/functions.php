@@ -9,14 +9,15 @@
 if (!function_exists('getSensitiveFromFile')){
     /**
      * @param $filePath
+     * @param string $delimiter
      * @return array
      */
-    function getSensitiveFromFile($filePath)
+    function getSensitiveFromFile($filePath, $delimiter = "\n")
     {
         $data = file_get_contents($filePath);
         return array_map(function ($a){
             return trim($a);
-        }, explode("\n", $data));
+        }, explode($delimiter, $data));
     }
 }
 
@@ -43,10 +44,10 @@ if (!function_exists('mbStrSplit')){
         $start = 0;
         $str_len = mb_strlen($string);
         $array = [];
-        while ($str_len) {
+        while ($str_len - 1) {
             array_push($array, utf8ToUnicodeInt(mb_substr($string,$start,$len,"utf8")));
-            $string = mb_substr($string, $len, $str_len,"utf8");
-            $str_len = mb_strlen($string);
+            $start ++;
+            $str_len --;
         }
         return $array;
     }

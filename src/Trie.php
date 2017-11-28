@@ -19,7 +19,6 @@ class Trie
      * @var array
      */
     private $check;
-
     public function __construct($base = [], $check = [])
     {
         $this->base = $base;
@@ -56,7 +55,7 @@ class Trie
         $start = 0;
         $str_len = mb_strlen($string);
         $array = [];
-        while ($str_len) {
+        while ($str_len - 1) {
             $array[] = mb_substr($string,$start,$len,"utf8");
             $start ++;
             $str_len --;
@@ -74,7 +73,7 @@ class Trie
         $last_key = 0;
         $results = [];
         $temp = '';
-        $str_arr = $this->mbStrSplit($str);echo microtime(true).PHP_EOL;
+        $str_arr = $this->mbStrSplit($str);
         $i = 0;
         $len = count($str_arr);
         for ($key = 0;$key < $len;$key ++){
@@ -124,5 +123,3 @@ class Trie
         throw new \InvalidArgumentException("file resolve error, check and base config can not find !");
     }
 }
-
-//var_dump(Trie::createFromFile('Tool/test.txt.trie')->detect('q354,2g2ghtrgh54234', 4));

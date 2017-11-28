@@ -17,14 +17,14 @@ class Trie
     {
     }
 
-    static public function createFromFile($filePath)
+    static public function createFromFile($filePath, $delimiter = "\n")
     {
         if (!file_exists($filePath)){
             echo "file '{$filePath}' not exist!";
             die();
         }
         $root = [];
-        $words = getSensitiveFromFile($filePath);
+        $words = getSensitiveFromFile($filePath, $delimiter);
         foreach ($words as $word){
             buildNode($root, mbStrSplit($word));
         }
@@ -38,9 +38,9 @@ class Trie
 if ($argc < 2){
     echo '  please provide filename at least!';
     die();
-}
-if ($argc === 2 ){
-    Trie::createFromFile($argv['1']);
+}else{
+    $delimiter = isset($argv[2]) ? $argv[2] : "\n";
+    Trie::createFromFile($argv[1], $delimiter);
 }
 
 echo 'done!';
