@@ -55,7 +55,7 @@ class Trie
         $start = 0;
         $str_len = mb_strlen($string);
         $array = [];
-        while ($str_len - 1) {
+        while ($str_len) {
             $array[] = mb_substr($string,$start,$len,"utf8");
             $start ++;
             $str_len --;
@@ -78,7 +78,7 @@ class Trie
         $len = count($str_arr);
         for ($key = 0;$key < $len;$key ++){
             $value = $str_arr[$key];
-            if (ctype_space($value)){
+            if (ctype_space($value) || empty($value)){
                 continue;
             }
             $temp_value = $this->utf8ToUnicodeInt($value);

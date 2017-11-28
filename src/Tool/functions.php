@@ -44,7 +44,7 @@ if (!function_exists('mbStrSplit')){
         $start = 0;
         $str_len = mb_strlen($string);
         $array = [];
-        while ($str_len - 1) {
+        while ($str_len) {
             array_push($array, utf8ToUnicodeInt(mb_substr($string,$start,$len,"utf8")));
             $start ++;
             $str_len --;
