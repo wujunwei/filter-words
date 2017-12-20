@@ -113,7 +113,7 @@ class Trie
      */
     static public function createFromFile($filePath)
     {
-        if (!file_exists($filePath)){
+        if (!file_exists($filePath) || !is_readable($filePath)){
             throw new \InvalidArgumentException("file {$filePath} not exist !");
         }
         $config = json_decode(file_get_contents($filePath), true);

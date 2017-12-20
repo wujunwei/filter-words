@@ -2,7 +2,6 @@
 if (PHP_SAPI  != 'cli'){
     die('you are not in cli mode');
 }
-define('UPDATE', '-u');
 define('FILE_EXTENSION', '.trie');
 require 'functions.php';
 require "../../vendor/autoload.php";
